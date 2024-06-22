@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Measurements App",
+  "name": "Measurements",
   "icons": [
     {
       "src": "favicon.ico",
