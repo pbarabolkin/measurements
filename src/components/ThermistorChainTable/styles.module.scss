@@ -1,0 +1,11 @@
+@import '../../styles/global.scss';
+
+.tableContainer {
+  table {
+    .firstRow {
+      th:not(:first-child) {
+        text-align: center;
+      }
+    }
+  }
+}

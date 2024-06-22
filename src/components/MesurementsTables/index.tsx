@@ -1,58 +1,24 @@
-import { useEffect, useState } from 'react';
-import { MesurementsApi } from '../../apis/mesurementsApi';
-import {
-  ApiResult,
-  ApiResultPaginated,
-  DeformationControl,
-  DeformationControlTrend,
-  SensorType,
-  ThermistorChain,
-  ThermistorChainTrend,
-} from '../../types';
+import styles from './styles.module.scss';
+import { useMeasurements } from '../../hooks/useMeasurements';
+import DeformationControlTable from '../DeformationControlTable';
+import ThermistorChainTable from '../ThermistorChainTable';
 
 const MesurementsTables = () => {
-  const [deformationControlResponse, setDeformationControlResponse] =
-    useState<ApiResultPaginated<DeformationControl[]>>();
-  const [thermistorChainResponse, setThermistorChainResponse] =
-    useState<ApiResultPaginated<ThermistorChain[]>>();
-  const [deformationControlTrendResponse, setDeformationControlTrendResponse] =
-    useState<ApiResult<DeformationControlTrend>>();
-  const [thermistorChainTrendResponse, setThermistorChainTrendResponse] =
-    useState<ApiResult<ThermistorChainTrend>>();
-
-  useEffect(() => {
-    async function fetchData() {
-      const dcResponse = (await MesurementsApi.getMeasurements(
-        SensorType.DeformationControl
-      )) as ApiResultPaginated<DeformationControl[]>;
-
-      const tcResponse = (await MesurementsApi.getMeasurements(
-        SensorType.ThermistorChain
-      )) as ApiResultPaginated<ThermistorChain[]>;
-
-      const dctResponse = (await MesurementsApi.getMeasurementsTrend(
-        SensorType.DeformationControl
-      )) as ApiResult<DeformationControlTrend>;
-
-      const tctResponse = (await MesurementsApi.getMeasurementsTrend(
-        SensorType.ThermistorChain
-      )) as ApiResult<ThermistorChainTrend>;
-
-      setDeformationControlResponse(dcResponse);
-      setThermistorChainResponse(tcResponse);
-      setDeformationControlTrendResponse(dctResponse);
-      setThermistorChainTrendResponse(tctResponse);
-    }
-
-    fetchData();
-  }, []);
+  const measurements = useMeasurements();
 
   return (
-    <div>
-      {deformationControlResponse?.data.length} <br />
-      {thermistorChainResponse?.data.length} <br />
-      {deformationControlTrendResponse?.data.criticalEndDate} <br />
-      {thermistorChainTrendResponse?.data.criticalEndDate} <br />
+    <div className={styles.mesurementsContainer}>
+      <DeformationControlTable
+        tableData={measurements.deformationControlTableData}
+        setFilterStartDate={measurements.setDeformationControlFilterStartDate}
+        setFilterEndDate={measurements.setDeformationControlFilterEndDate}
+      />
+      <br />
+      <ThermistorChainTable
+        tableData={measurements.thermistorChainTableData}
+        setFilterStartDate={measurements.setThermistorChainFilterStartDate}
+        setFilterEndDate={measurements.setThermistorChainFilterEndDate}
+      />
     </div>
   );
 };
