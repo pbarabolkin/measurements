@@ -24,6 +24,12 @@ const CustomTable = ({ options }: { options: any }) => {
         buildTable(tableEl);
       });
     }
+
+    return () => {
+      if (tableRef.current && $(tableRef.current).bootstrapTable) {
+        $(tableRef.current).bootstrapTable('destroy');
+      }
+    };
   }, [options]);
 
   return <table ref={tableRef}></table>;

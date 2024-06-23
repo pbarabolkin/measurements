@@ -63,7 +63,9 @@ const ThermistorChainTable = ({
                 return {
                   title: item,
                   field: 'data',
-                  formatter: function (val: any) {
+                  formatter: function (val: {
+                    [x: string]: { value: number };
+                  }) {
                     return val && val[item]
                       ? val[item].value.toFixed(2)
                       : undefined;
@@ -74,7 +76,10 @@ const ThermistorChainTable = ({
           data: tableData,
           fixedColumns: true,
           fixedNumber: 2,
-          onPostHeader: (bTable: any) => {
+          onPostHeader: (bTable: {
+            $tableHeader: { find: (arg0: string) => any };
+            $fixedColumns: any;
+          }) => {
             // this all needed to add extra row into table header
             const $tr = bTable.$tableHeader.find('thead > tr');
             let $clone = $tr.clone();
