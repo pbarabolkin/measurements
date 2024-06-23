@@ -3,6 +3,7 @@ import moment from 'moment';
 import { ThermistorChain } from '../../types';
 import FilterPanel from '../common/FilterPanel';
 import styles from './styles.module.scss';
+import { memo } from 'react';
 
 const ThermistorChainTable = ({
   tableData,
@@ -77,15 +78,25 @@ const ThermistorChainTable = ({
             // this all needed to add extra row into table header
             const $tr = bTable.$tableHeader.find('thead > tr');
             let $clone = $tr.clone();
-            $clone.addClass(styles.firstRow);
-            $clone.find('th:nth-child(n+4)').remove();
-            $clone.find('th:not(:last-child)').attr('rowspan', '2');
-            $clone
+
+            $tr.addClass(styles.firstRow);
+            $tr.find('th:nth-child(n+4)').remove();
+            $tr.find('th:not(:last-child)').attr('rowspan', '2');
+            $tr
               .find('th:last-child')
               .attr('colspan', dynamicColumnsSet.size)
               .text('Глубина, м');
-            $clone.insertBefore($tr);
-            $tr.find('th:nth-child(1),th:nth-child(2)').remove();
+
+            $clone.find('th:nth-child(1),th:nth-child(2)').remove();
+            $clone.insertAfter($tr);
+
+            setTimeout(function () {
+              const extraHeight = $tr.height();
+              const $fixedColumns = bTable.$fixedColumns;
+              const $fixedTableBody = $fixedColumns.find('.fixed-table-body');
+              $fixedColumns.height($fixedColumns.height() + extraHeight);
+              $fixedTableBody.height($fixedTableBody.height() + extraHeight);
+            });
           },
         }}
       ></CustomTable>
@@ -93,4 +104,4 @@ const ThermistorChainTable = ({
   );
 };
 
-export default ThermistorChainTable;
+export default memo(ThermistorChainTable);

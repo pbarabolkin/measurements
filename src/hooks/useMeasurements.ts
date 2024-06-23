@@ -78,6 +78,22 @@ export const useMeasurements = () => {
         return startDateSucceed && endDateSucceed;
       });
 
+      filteredData
+        .sort((a, b) => {
+          const aVal = moment(a.time);
+          const bVal = moment(b.time);
+          if (aVal < bVal) {
+            return -1;
+          } else if (aVal > bVal) {
+            return 1;
+          }
+
+          return 0;
+        })
+        .forEach((item, i) => {
+          item.mesurementCycle = i;
+        });
+
       setDeformationControlTableData(filteredData);
     }
   }, [
@@ -114,5 +130,7 @@ export const useMeasurements = () => {
     thermistorChainTableData,
     setThermistorChainFilterStartDate,
     setThermistorChainFilterEndDate,
+    deformationControlTrendResponse,
+    thermistorChainTrendResponse,
   };
 };

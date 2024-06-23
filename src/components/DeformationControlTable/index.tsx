@@ -2,6 +2,8 @@ import CustomTable from '../common/CustomTable';
 import moment from 'moment';
 import { DeformationControl } from '../../types';
 import FilterPanel from '../common/FilterPanel';
+import { memo } from 'react';
+import styles from './styles.module.scss';
 
 const DeformationControlTable = ({
   tableData,
@@ -33,7 +35,7 @@ const DeformationControlTable = ({
             },
             {
               title: 'Цикл измерения',
-              field: '',
+              field: 'mesurementCycle',
             },
             {
               title: 'Отметка',
@@ -48,6 +50,14 @@ const DeformationControlTable = ({
               formatter: function (val: number) {
                 return val ? val.toFixed(4) : val;
               },
+              cellStyle: function (val: number, rowData: DeformationControl) {
+                return {
+                  classes:
+                    val !== undefined && val > rowData.criticalDelta
+                      ? styles.cellDanger
+                      : '',
+                };
+              },
             },
           ],
           data: tableData,
@@ -59,4 +69,4 @@ const DeformationControlTable = ({
   );
 };
 
-export default DeformationControlTable;
+export default memo(DeformationControlTable);

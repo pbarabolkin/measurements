@@ -17,6 +17,7 @@ export interface DeformationControl {
   data: DeformationControlSensorData;
   state: string;
   criticalDelta: number;
+  mesurementCycle: number;
 }
 
 export interface ThermistorChainSensorData {
